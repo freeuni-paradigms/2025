@@ -8,7 +8,7 @@ Linux-ზე არაფერი დამატებითი არ გჭ�
 https://drive.google.com/file/d/1QJc25MC9gfylLIJxOSOfzka7SwtAuey3/view?usp=sharing
 
 Intall UTM from: [https://mac.getutm.app/](https://mac.getutm.app/)  
-Download debian installer from: [https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-12.7.0-amd64-netinst.iso](https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-13.1.0-amd64-netinst.iso)
+Download debian installer from: [https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-13.1.0-amd64-netinst.iso](https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-13.1.0-amd64-netinst.iso)
 
 Open UTM:  
 Create New VirtualMachine  
