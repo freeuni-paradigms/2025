@@ -1,4 +1,4 @@
-# პროგრამირების პარადიგმები - 2024
+# პროგრამირების პარადიგმები - 2025
 
 ## Google Classroom
 კოდი: **kksewbqr**  
@@ -25,4 +25,4 @@
 https://docs.google.com/document/d/1bQOfcLp23o-F3GR5l-ccrXNwJRv7JXRLBGIMcEh0t94/edit
 
 ## ვირტუალური მანქანა
-https://github.com/freeuni-paradigms/2025/tree/main/vm
+https://github.com/freeuni-paradigms/2025/tree/master/vm
