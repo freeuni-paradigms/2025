@@ -18,26 +18,35 @@ man      # display the manual page
 
 # Gnu C Compiler
 ### Compile hello.c into a.out (default output)
----
 gcc hello.c
 
 ## Compile hello.c and name the output hello.o
----
 gcc hello.c -o hello.o
 
 # Git
-## Clone a repository to your local machine
----
+### Clone a repository into a new directory
 git clone [repository url]
 
-## Check the status of your modifications
----
+### Add file contents to index
+git add [files]
+
+### Record changes to repository
+git commit -m "commit message"
+
+### Update remote refs along with associated objects
+git push
+
+### Show the working tree status
 git status
+
+### Fetch from and integrate with another repository or a local branch
+git pull
+
+### git-ის დამატებითი დოკუმენტაცია [https://git-scm.com/docs](https://git-scm.com/docs)
 
 
 # გარემოს გამართვა
 ## WSL
----
 install wsl - https://learn.microsoft.com/en-us/windows/wsl/install
 
 შეგიძლიათ აირჩიოთ Ubuntu-24.04 დისტრიბუცია
@@ -46,12 +55,10 @@ install wsl - https://learn.microsoft.com/en-us/windows/wsl/install
 
 
 ## Dual Boot
----
 dual boot-ის დასაყენებლად ეს ლინკები შეიძლება დაგეხმაროთ 
 - https://www.youtube.com/watch?v=T78rCJ_i1no&list=PLSVEuMqiyyvjLxuH92Scw_LDvNTdFU5-j&index=10
 - https://gcore.com/learning/dual-boot-ubuntu-windows-setup
 
 
 ## Mac Os
----
 VM installation guide - https://github.com/freeuni-paradigms/2025/blob/master/vm/README.md
