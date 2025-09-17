@@ -13,6 +13,8 @@
  * case it's OK.  
  */
 
+#include <limits.h>
+
 #if 0
 /*
  * Instructions to Students:
@@ -142,8 +144,14 @@ NOTES:
  *   Max ops: 14
  *   Rating: 1
  */
+/*
+  1010
+  0011
+  ____
+  1001
+*/
 int bitXor(int x, int y) {
-  return 2;
+  return ~(~(x & ~y) & ~(y & ~x));
 }
 /* 
  * tmin - return minimum two's complement integer 
@@ -152,9 +160,7 @@ int bitXor(int x, int y) {
  *   Rating: 1
  */
 int tmin(void) {
-
-  return 2;
-
+  return 1 << 31;
 }
 //2
 /*
@@ -165,7 +171,11 @@ int tmin(void) {
  *   Rating: 1
  */
 int isTmax(int x) {
-  return 2;
+  // int a = 0b011111111111111111111;
+
+  int plus_one = x + 1; // 0b100000000000000000000;
+
+  return !(~(plus_one ^ x) | !plus_one);
 }
 /* 
  * allOddBits - return 1 if all odd-numbered bits in word set to 1
@@ -176,7 +186,12 @@ int isTmax(int x) {
  *   Rating: 2
  */
 int allOddBits(int x) {
-  return 2;
+  int aa = 0xAA;
+  int aaaaaaaa = aa | aa << 8 | aa << 16 | aa << 24;
+
+  int x_odds = x & aaaaaaaa;
+  
+  return !(~aaaaaaaa & x_odds);
 }
 /* 
  * negate - return -x 
@@ -186,7 +201,9 @@ int allOddBits(int x) {
  *   Rating: 2
  */
 int negate(int x) {
-  return 2;
+  // 0010 -> 1101
+  
+  return ~x + 1;
 }
 //3
 /* 
@@ -199,6 +216,8 @@ int negate(int x) {
  *   Rating: 3
  */
 int isAsciiDigit(int x) {
+  // [00110000 - 00111001]
+
   return 2;
 }
 /* 
