@@ -175,18 +175,31 @@ int tmin(void) {
  *   Max ops: 10
  *   Rating: 1
  */
-// bool x = 8;
-// !x = 0;
-// bool y = 0;
-// !y = 1
 int isTmax(int x) {
-  //tmax 01111111
-  //tmin 10000000
-  //tmax ^ tmin 11111111   
-  int tmin = 1 << 31;
-  int istm = x ^ ~tmin;
-  return !istm;
+  //       
+  // max -        01111111 11111111 11111111 11111111
+  // max + 1 -    10000000 00000000 00000000 00000000
+  // ~(max + 1) - 01111111 11111111 11111111 11111111
+  // ^          - 00000000 00000000 00000000 00000000
+  // !          - 00000000 00000000 00000000 00000001
+  //
+  // int a = 5
+  // !a   == 0
+  //
+  // int b = 0;
+  // !b == 1
+  //
+  //
+  // -1           11111111 11111111 11111111 11111111
+  // -1 +1        00000000 00000000 00000000 00000000
+  // ~(-1 +1)     11111111 11111111 11111111 11111111
+  // ^            00000000 00000000 00000000 00000000
+  // !            00000000 00000000 00000000 00000001
+  //
+  return !(~(x + 1) ^ x) & !!(x + 1); 
 }
+
+
 /* 
  * allOddBits - return 1 if all odd-numbered bits in word set to 1
  *   where bits are numbered from 0 (least significant) to 31 (most significant)
@@ -195,9 +208,38 @@ int isTmax(int x) {
  *   Max ops: 12
  *   Rating: 2
  */
+
+//    1-1-1-1- 10101010 10101010 10101000
+// >> 11-1-1-1 -1-1-1-1 -1-1-1-1 -1-1-1-0
+// |
+//    11111111 11111111 11111111 11111101
+
+
+
+
+
+
+
+/*
+ * 0xAAAAAAAA
+ * 10101010 10101010 10101010 10101010 - 1
+ * 0xFFFFFFFD
+ * 11111111 11111111 11111111 11111011 - 0
+ */
+
+// int x = 7;
+// !x = 0;
+//
+// int y = 0;
+// !y = 1;
 int allOddBits(int x) {
-  return 2;
+  // 01010101 ...
+  int i = 0x55555555;
+  int p = x | i;
+  // 0xffffffff
+  return !(~p);
 }
+
 /* 
  * negate - return -x 
  *   Example: negate(1) = -1.
@@ -205,8 +247,13 @@ int allOddBits(int x) {
  *   Max ops: 5
  *   Rating: 2
  */
+
+// 5                00001001
+// ones complement  11110110   + 1
+// two's complement 11110111
+//                 100000000 
 int negate(int x) {
-  return 2;
+  return ~x + 1;
 }
 //3
 /* 
@@ -219,7 +266,18 @@ int negate(int x) {
  *   Rating: 3
  */
 int isAsciiDigit(int x) {
-  return 2;
+  int minus30 = ~0x30 + 1;
+  int check1 = x + minus30;
+  
+  int minusX = ~x + 1;
+  int check2 = 0x39 + minusX;
+
+  // 1 0
+  // 11111111
+  // 00000000
+  // ! 00000000
+  // ! 00000001
+  return !(check1 >> 31) & !(check2 >> 31);
 }
 /* 
  * conditional - same as x ? y : z 
@@ -229,6 +287,11 @@ int isAsciiDigit(int x) {
  *   Rating: 3
  */
 int conditional(int x, int y, int z) {
+  //bool a;
+  // if (x) {
+  //   return y;
+  // }
+  // return z;
   return 2;
 }
 /* 

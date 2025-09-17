@@ -12,3 +12,7 @@
 
 ### Original File
 - bits_unchanged.c
+
+### Prerequisits
+- sudo apt install gcc-multilib
+
