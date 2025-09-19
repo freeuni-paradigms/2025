@@ -218,7 +218,10 @@ int negate(int x) {
 int isAsciiDigit(int x) {
   // [00110000 - 00111001]
 
-  return 2;
+  int sub_1 = x + (~'0' + 1);
+  int sub_2 = '9' + (~x + 1);
+
+  return !((sub_1 >> 31) | (sub_2 >> 31));
 }
 /* 
  * conditional - same as x ? y : z 
