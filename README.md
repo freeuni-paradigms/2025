@@ -10,14 +10,14 @@
 ## დავალებების მოსაწვევები
 | დავალება | ქულა | მოსაწვევი | ჩაბარების თარიღი |
 |----------|------|-----------|------------------|
-| 01 - rsg | 3 |  |  |
-| 02 - six-degrees | 7 |  |  |
-| 03 - vector-hashset | 7 |  |  |
-| 04 - rss-news-search | 7 |  |  |
+| 01 - rsg | 3 | https://classroom.github.com/a/A6C3tp4_ |  |
+| 02 - six-degrees | 7 | https://classroom.github.com/a/ecbLwBYm |  |
+| 03 - vector-hashset | 7 | https://classroom.github.com/a/hJfAhtck |  |
+| 04 - rss-news-search | 7 | https://classroom.github.com/a/qBsSx5r- |  |
 | 05 - TBD | 0 | TBD |  |
-| 06 - bankdriver | 9 |  |  |
-| 07 - where-am-i | 4 |  |  |
-| 08 - align | 3 |  |  |
+| 06 - bankdriver | 9 | https://classroom.github.com/a/MuMgVD4w |  |
+| 07 - where-am-i | 4 | https://classroom.github.com/a/8rtlHEzH |  |
+| 08 - align | 3 | https://classroom.github.com/a/oSX48icO |  |
 | bonus | 10 |  |  |
 
 ## Git basics
