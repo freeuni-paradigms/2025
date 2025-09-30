@@ -5,12 +5,32 @@
 
 void Decompress(char **data)
 {
+    int alloc_size = 1;
+    char *decompressed = malloc(alloc_size);
+    decompressed[0] = '\0';
+
+    for (int i = 0; (*data)[i] != '\0'; i++)
+    {
+        int num_chars = ((*data)[i] >> 4) & 0x0f; // [xxxx]xxxx
+        int repeats = (*data)[i] & 0x0f; // xxxx[xxxx] -> 15 = 0x0f = 0b00001111
+
+        alloc_size += num_chars * repeats;
+        decompressed = realloc(decompressed, alloc_size);
+
+        for (int j = 0; j < repeats; j++)
+            strncat(decompressed, *data + i + 1, num_chars);
+
+        i += num_chars;
+    }
+
+    free(*data);
+    *data = decompressed;
 }
 
 void Test1()
 {
     printf("Test1: ");
-    char *expectValue = "aabcbcbcx";
+    char *expectValue = "aabcbcbcx";    
     char *data = malloc(8);
     char *ptr = data;
 

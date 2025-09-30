@@ -12,7 +12,7 @@ int strcmp(const char *s1, const char *s2)
     return 0;
 }
 
-char *strcpy(char *dest, const char * src)
+char *strcpy(char *dest, const char *src)
 {   
     char *const start_dest = dest;
 
