@@ -10,7 +10,7 @@
 ## დავალებების მოსაწვევები
 | დავალება | ქულა | მოსაწვევი | ჩაბარების თარიღი |
 |----------|------|-----------|------------------|
-| 01 - rsg | 3 | https://classroom.github.com/a/A6C3tp4_ | 9/10/2025 |
+| 01 - rsg | 3 | [https://classroom.github.com/a/A6C3tp4_](https://classroom.github.com/a/A6C3tp4_) | 9/10/2025 |
 | 02 - six-degrees | 7 | https://classroom.github.com/a/ecbLwBYm | 18/19/2025 |
 | 03 - vector-hashset | 7 | https://classroom.github.com/a/hJfAhtck |  |
 | 04 - rss-news-search | 7 | https://classroom.github.com/a/qBsSx5r- |  |
