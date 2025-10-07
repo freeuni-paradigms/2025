@@ -12,13 +12,19 @@
 //} nodeType;
 //  int, nodeType
 
-char *ConcatStrings(const char *s1,const  char *s2) {
-  int len1 = strlen(s1);
-  int len2 = strlen(s2);
 
-  char *s = malloc(len1 + len2 + 1);
+// function has ownership on s1, s2 ownership 
+// ownership on returned string has client
+char *ConcatStrings(const char *s1,const  char *s2) {
+  int len = strlen(s1) + strlen(s2) + 1;
+  char *s = malloc(len);
+
   strcpy(s, s1);
   strcat(s, s2);
+
+  free(s1);
+  free(s2);
+
   return s;
 }
 
@@ -26,11 +32,11 @@ char *ConcatAll(nodeType *list) {
   nodeType type = *list;
 
   if (type == Nil || type == Integer) {
-    return "";
+    return strdup("");
   }
 
   if (type == String) {
-    char *s = (char *)(list + 1);
+    char *s = strdup((char *)(list + 1));
     return s;
   }
 

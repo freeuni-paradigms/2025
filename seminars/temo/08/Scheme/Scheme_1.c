@@ -11,36 +11,49 @@
 //	Nil
 //} nodeType;
 
-//char *ConcatStrings(const char *i,const  char *j) {
-//  return NULL;
-//}
+// s1, s2 - we should free
+// return char * - client memopy client should call free
+char *ConcatStrings(const char *s1,const char *s2) {
+  int len = strlen(s1) + strlen(s2);
 
+  char *new = malloc(len + 1);
+
+  strcpy(new, s1);
+  strcat(new, s2);
+
+  free(s1);
+  free(s2);
+  //printf("%s\n", new);
+  return new;
+}
+
+// allocates memory for our string
 char *ConcatAll(nodeType *list) {
   nodeType type = *list;
   
+  //printf("%d\n", type);
   if (type == Nil) {
-    return "";
+    return strdup("");
   }
   
   if (type == Integer) {
-    return "";
+    return strdup("");
   } 
 
   if (type == String) {
-    char *s = (char *)(list + 1);
+    char *s = strdup((char *)(list + 1));
     return s;
   }
   
   // list
-  nodeType *elem = list + 1;
-  nodeType *nextElem = list + 2;
-  return ConcatStrings(ConcatAll(elem), ConcatAll(nextElem));
+  nodeType *elem = *(nodeType **)(list + 1);
+  nodeType *nextElem = *(nodeType **)((char *)list + sizeof(nodeType) + sizeof(void *));
+  
+  char *elemStr = ConcatAll(elem); 
+  char *nextElemStr = ConcatAll(nextElem);
+
+  return ConcatStrings(elemStr, nextElemStr);
 }
-
-
-
-
-
 
 void main(int argc, char **argv) {
     printf("sizeof nodetype = %d\n", sizeof(nodeType));
