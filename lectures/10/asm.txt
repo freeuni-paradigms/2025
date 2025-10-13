@@ -1,0 +1,28 @@
+// C
+
+int i, j;
+i = 10;
+j = i + 7;
+
+
+// ASM
+
+li x10 10
+sw x10 4(sp)
+
+lw x10 4(sp)
+addi x10 x10 7
+sw x10 0(sp)
+
+
+
+
+li x10 200
+sw x10 4(sp)
+
+lw x11 4(sp)
+sh x11 2(sp)
+
+lh x12 2(sp)
+addi x12 x12 1
+sh x12 0(sp)
