@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 typedef struct { 
   void *base;
   int elemSize;

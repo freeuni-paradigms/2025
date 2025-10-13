@@ -1,4 +1,7 @@
-#include "sorted_set_.h"
+#include "sorted_set.h"
+#include <string.h>
+#include <stdlib.h>
+
 // typedef struct { 
 //   void *base;
 //   int elemSize;
@@ -6,6 +9,9 @@
 //   int logLen;
 //   int (*cmpfn)(const void *, const void *);
 // } sortedset;
+
+#define MEMORY_SIZE(capacity, elemSize) (capacity * (elemSize + 2*sizeof(int)) + sizeof(int))
+#define ELEM_PTR(base, index, elemSize) (char *)base + sizeof(int) + index * (2 * sizeof(int) + elemSize)
 
 /*
  * Function: SetNew
@@ -20,7 +26,7 @@
 static const int kInitialCapacity = 4;
 void SetNew(sortedset *set, int elemSize,
             int (*cmpfn)(const void *, const void *)) {
-  set->base = malloc(kInitialCapacity * (elemSize + 2 * sizeof(int)) + sizeof(int));
+  set->base = malloc(MEMORY_SIZE(kInitialCapacity, elemSize));
   *(int *)set->base = -1;
   set->elemSize = elemSize;
   set->allocLen = kInitialCapacity;
@@ -29,7 +35,24 @@ void SetNew(sortedset *set, int elemSize,
 }
 
 int *findElem(sortedset *set, const void *elemPtr) {
+  int *indexPtr = (int *)set->base;
+  void *currentElem = NULL;
+  
+  while (*indexPtr != -1) {
+    currentElem = ELEM_PTR(set->base, *indexPtr, set->elemSize);
+    int res = set->cmpfn(elemPtr, currentElem); 
+  
+    if (res == 0) {
+      return indexPtr;
+    }
 
+    if (res < 0) {
+      indexPtr = (int *)((char *)currentElem + set->elemSize); 
+    } else {
+      indexPtr = (int *)((char *)currentElem + set->elemSize + sizeof(int));
+    }
+  }
+  return indexPtr;
 }
 
 /*
@@ -49,8 +72,8 @@ void *SetSearch(sortedset *set, const void *elemPtr) {
   if (index == -1) {
     return NULL;
   }
-  void *elem = (char *)set->base + sizeof(int) + index * (set->elemSize + 2 * sizeof(int));
-  return elem;
+
+  return ELEM_PTR(set->base, index, set->elemSize); 
 }
 
 /*
@@ -70,19 +93,20 @@ bool SetAdd(sortedset *set, const void *elemPtr) {
     return false;
   }
 
-  *indexPtr = set->logLen;
-
-  if (set->logLen >= set->allocLen) {
+  if (set->logLen == set->allocLen) {
     set->allocLen *= 2;
-    set->base = realloc(set->allocLen * (elemSize + 2 * sizeof(int)) + sizeof(int));
+    set->base = realloc(set->base, MEMORY_SIZE(set->allocLen, set->elemSize));
   }
-  
-  void *newElemAddr = (char *)set->base + sizeof(int) + set->logLen * (set->elemSize + 2 * sizeof(int));
 
-  memcpy(newElemAddr, elemPtr, elemSize);
-  
-  (int *)((char *)newElemAddress + elemSize)[0] = -1;
-  (int *)((char *)newElemAddress + elemSize)[1] = -1;
-  
+  int index = set->logLen;
+  *indexPtr = index;
+
+  void *newElem = ELEM_PTR(set->base, index, set->elemSize);
+  memcpy(newElem, elemPtr, set->elemSize);
+
+  int *indices = (int *)((char *)newElem + set->elemSize);
+  indices[0] = indices[1] = -1;
+
   set->logLen++;
+  return true;
 }
