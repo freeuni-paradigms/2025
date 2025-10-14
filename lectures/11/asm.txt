@@ -1,0 +1,23 @@
+// INIT
+SW x0 0(sp)
+// TEST
+test:
+LW x10 0(sp)
+LI x11 4
+BGE x10 x11 PC+40
+// BODY
+LI x10 0(sp)
+MULI x10 x10 4
+ADDI x10 x10 4
+ADD x10 x10 sp
+SW x0 0(x10)
+// STEP
+LW x10 0(sp)
+ADDI x10 x10 1
+SW x10 0(sp)
+J test PC-44
+out_of_loop:
+LW x10 0(sp)
+ADDI x10 x10 -1
+SW x10 0(sp)
+
