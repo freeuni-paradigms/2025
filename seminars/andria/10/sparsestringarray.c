@@ -2,7 +2,7 @@
 #include "vector.h"
 #include <string.h>
 
-void StringFree(void* elemAddr){
+void StringFree(void* elemAddr) {
     free(*(char**)elemAddr);
 }
 
@@ -16,18 +16,25 @@ void StringFree(void* elemAddr){
 * can also assume that groupSize divides evenly into arrayLength.
 */
 void SSANew(sparsestringarray* ssa, int arrayLength, int groupSize) {
-	ssa->groupSize = groupSize;
-	ssa->numGroups = arrayLength / groupSize;
-	ssa->arrayLength = 0;
-	ssa->groups = malloc(sizeof(group) * ssa->numGroups);
-	
-	for (int i = 0; i < ssa->numGroups; i++)
-	{
-		ssa->groups[i].bitmap = malloc(groupSize);
-		memset(ssa->groups[i].bitmap, 0, groupSize);
+    ssa->groupSize = groupSize;
+    ssa->arrayLength = 0;
+    ssa->numGroups = arrayLength / groupSize;
+    ssa->groups = malloc(sizeof(group) * ssa->numGroups);
+ 
+    for (int i = 0; i < ssa->numGroups; i++)
+    {   
+        VectorNew(&ssa->groups[i].strings, sizeof(char *), StringFree, ssa->groupSize);
+        // სემინარზე შეცდომა აქ გვქონდა, მეგონა როდესაც VectorNew-ს თაცდაპირველ ზომას გადავცემდით
+        // ის შეავსებდა ცარიელი დატით სივრცეებს, თუმცა ასე არ ხდება და ეს ჩვენ უნდა გავაკეთოთ
+        for (int j = 0; j < ssa->groupSize; j++) 
+        {
+            char *empty_str = strdup("");
+            VectorAppend(&ssa->groups[i].strings, &empty_str);
+        }
 
-		VectorNew(&ssa->groups[i].strings, sizeof(char *), StringFree, groupSize);
-	}
+        ssa->groups[i].bitmap = malloc(ssa->groupSize);
+        memset(ssa->groups[i].bitmap, 0, ssa->groupSize);
+    }
 }
 
 /**
@@ -38,12 +45,13 @@ void SSANew(sparsestringarray* ssa, int arrayLength, int groupSize) {
 * lifetime.
 */
 void SSADispose(sparsestringarray* ssa) {
-	for (int i = 0; i < ssa->numGroups; i++)
-	{
-		free(ssa->groups[i].bitmap);
-		VectorDispose(&ssa->groups[i].strings);
-	}
-	free(ssa->groups);
+    for (int i = 0; i < ssa->numGroups; i++)
+    {
+        free(ssa->groups[i].bitmap);
+        VectorDispose(&ssa->groups[i].strings);
+    }
+
+    free(ssa->groups);
 }
 
 /**
@@ -55,23 +63,29 @@ void SSADispose(sparsestringarray* ssa) {
 * SSAInsert makes a deep copy of the string address by str.
 */
 bool SSAInsert(sparsestringarray* ssa, int index, const char* str) {
-	int group_idx = index / ssa->groupSize;
-	int string_idx = index % ssa->groupSize;
+    int group_idx = index / ssa->groupSize;
+    int string_idx = index % ssa->groupSize;
 
-	group *our_group = &ssa->groups[group_idx];
+    group *curr_group = &ssa->groups[group_idx];
 
-	if (our_group->bitmap[string_idx])
-	{
-		VectorReplace(&our_group->strings, str, string_idx);
+    char *value = strdup(str);
 
-		return false;
-	}
+    if (curr_group->bitmap[string_idx])
+    {
+        // აქ ასევე შეცდომა გვქონდა, როგორც ჩანს, ვექტორი პირდაპირ ფოინთერს ინახავს
+        // ჩვენ გვინდა გადავაკოპიროთ, ამიტომ სტრინგი პირდაპირ არ უნდა გადავაწოდოთ ვექტორს
+        // და მას დუპლიკაცია უნდა გავუკეთოთ, ასევე ვექტორს გადაეცემა ცვლადის მისამართი 
+        // (იგივე შეცდომაა StringInsert-ის ხაზზე)
+        VectorReplace(&curr_group->strings, &value, string_idx);
 
-	VectorInsert(&our_group->strings, str, string_idx);
-	our_group->bitmap[string_idx] = true;
-
-	ssa->arrayLength++;
-	return true;
+        return false;
+    }
+    
+    VectorInsert(&curr_group->strings, &value, string_idx);
+    curr_group->bitmap[string_idx] = true;
+    ssa->arrayLength++;
+    
+    return true;
 }
 
 /**
@@ -82,14 +96,17 @@ bool SSAInsert(sparsestringarray* ssa, int index, const char* str) {
 * is called on behalf of all strings, both empty and nonempty.
 */
 void SSAMap(sparsestringarray* ssa, SSAMapFunction mapfn, void* auxData) {
-	for (int i = 0; i < ssa->numGroups; i++)
-	{
-		group *curr_group = &ssa->groups[i];
-		for (int j = 0; j < ssa->groupSize; j++)
-		{
-			const char *string = *(char **)VectorNth(&curr_group->strings, j);
-			mapfn(i * ssa->groupSize + j, string, auxData);
-		}
-	}
+    for (int i = 0; i < ssa->numGroups; i++)
+    {
+        group *curr_group = &ssa->groups[i];
+
+        for (int j = 0; j < ssa->groupSize; j++)
+        {
+            if (curr_group->bitmap[j]) {
+                const char *str = *(char **)VectorNth(&curr_group->strings, j);
+                mapfn(i * ssa->groupSize + j, str, auxData);
+            }
+        }
+    }
 }
 
