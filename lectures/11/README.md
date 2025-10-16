@@ -59,3 +59,47 @@ int fact(int n) {
   }
   return n * fact(n - 1);
 }
+
+int main() {
+  printf("%d\n", fact(3));
+  return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+main:
+LI x10 4
+SW x10 0(sp)
+
+ADDI sp sp -8
+LW x10 8(sp)
+SW x10 0(sp)	
+ADDI x11 sp 8
+SW x11 4(sp)
+ADDI sp sp -4
+SW ra 0(sp)
+CALL foo // RA <- PC+4
+LW ra 0(sp)
+ADDI sp sp 12
+RET
+
+
+
+
+
+
+foo:
+ADDI sp sp -8
+lajhsdgljahsgd
+ajshdgalsd
+ADDI sp sp 8
+RET // PC <- RA
+
