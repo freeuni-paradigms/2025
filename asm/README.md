@@ -47,3 +47,6 @@ Simulator ტაბში შეგიძლიათ გაუშვათ (Run
 
 ## ecall ის დოკუმენტაცია
 [https://github.com/ThaumicMekanism/venus/wiki/Environmental-Calls](https://github.com/ThaumicMekanism/venus/wiki/Environmental-Calls)
+
+## Compiler Explorer - საიტი რომელიც C/C++-ს თარგმნის სხვადსხვა ესემბლიში (risc-v-შიც)
+[Compiler Explorer](https://godbolt.org/)
