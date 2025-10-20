@@ -23,7 +23,7 @@ not_zero:
 	LW x11 4(sp)
 	ADDI x11 x11 -1
 	ADDI sp sp -4
-	LW x11 0(sp)
+	SW x11 0(sp)
 	ADDI sp sp -4
 	SW ra 0(sp)
 	CALL fact

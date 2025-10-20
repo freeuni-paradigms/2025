@@ -1,0 +1,75 @@
+void foo() {
+  int x;
+  int y;
+  x = 5;
+  y = 7;
+  swap(&x, &y);
+}
+
+foo:
+ADDI sp sp -8
+LI x10 5
+LI x11 7
+SW X10 4(sp)
+SW x11 0(sp)
+ADDI sp sp -8
+ADDI x12 sp 12
+ADDI x13 sp 8
+SW x12 0(sp)
+SW x13 4(sp)
+ADDI sp sp -4
+SW ra 0(sp)
+CALL swap
+LW ra 0(sp)
+ADDI sp sp 12
+ADDI sp sp 8
+RET
+
+
+
+
+
+void swap(int* a, int* b) {
+  int tmp = *a;
+  *a = *b;
+  *b = tmp;
+}
+
+
+swap:
+ADDI sp sp -4
+// tmp = *a
+LW x10 8(sp)
+LW x11 0(x10)
+SW x11 0(sp)
+// *a = *b
+LW x10 12(sp)
+LW x11 0(x10)
+LW x10 8(sp)
+SW x11 0(x10)
+// *b = tmp
+LW x10 0(sp)
+LW x11 12(sp)
+SW x10 0(x11)
+RET
+
+
+
+caller -> callee 
+
+
+
+void foo() {
+  int x;
+  int y;
+  x = 5;
+  y = 7;
+  swap(x, y);
+}
+
+
+void swap(int& a, int& b) {
+  int tmp = a;
+  a = b;
+  b = tmp;
+}
