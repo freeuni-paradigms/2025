@@ -22,7 +22,7 @@ struct human **AskingQuestions(struct human *heroes) {
     // addi sp, sp, -12
     // lh t1, 8(sp)
     // sw t1, 4(sp)
-    // lw t2, 16(sp)
+    // lw t2, 12(sp)
     // BNE t2, 0, endif
     // lw t3, 0(sp)
     // addi t4, t3, 8
@@ -33,8 +33,8 @@ struct human **AskingQuestions(struct human *heroes) {
     // ret
 
     int a, b, c;                            // line 1
-    c = (short)b;                           // line 2, 3
-    if (*(int *)heroes->emmyjo == 0)        // line 4
+    b = (short)c;                           // line 2, 3
+    if (heroes->doug == 0)        // line 4
     {
         a += 8;                             // line 5, 6, 7 
     }
