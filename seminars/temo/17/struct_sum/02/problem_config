@@ -1,0 +1,4 @@
+cp struct_sum.s test_out/
+cp run_tests.py test_out/
+python3 ./run_tests.py
++ run_tests.py

@@ -1,0 +1,6 @@
+#ifndef PARADIGMS_CHAMPIONSHIP_H_
+#define PARADIGMS_CHAMPIONSHIP_H_
+
+int FindWinner(void* d);
+
+#endif // PARADIGMS_CHAMPIONSHIP_H_
