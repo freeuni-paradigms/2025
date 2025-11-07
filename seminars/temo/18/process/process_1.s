@@ -1,10 +1,114 @@
+# typedef struct { 16 bytes
+#   double d;  | 8 bytes | 0 offset
+#   char c[4]; | 4 bytes | 8 offset
+#   int i;     | 4 bytes | 12 offset
+# } Work;
+# 
+# typedef int(*TransformFN)(int);
+# 
+# int process(int n, Work* w, TransformFN tfn) {
+#   int ret = 0;
+#   int i = 0;
+#   while (true) {
+# 	i += 2;
+# 	if (i == n) {
+# 	  break;
+# 	}
+# 	ret += tfn(*(int*)((short*)w[i].c + 1));
+#   }
+#   return ret;
+# }
+
 .text
 call main
 
 min:
 ret
 
+#
+# TransformFn tfn | 4 bytes  |16 offset
+# Work       *w   | 4 bytes  |12 offset
+# int         n   | 4 bytes  | 8 offset
 process:
+# int         ret | 4 bytes  | 4 offset
+# int         i   | 4 bytes  | 0 offset
+# grow stack for local args
+addi sp, sp, -8
+
+#   int ret = 0;
+sw x0, 4(sp)
+
+#   int i = 0;
+sw x0, 0(sp)
+
+#   while (true) {
+while_start:
+# 	i += 2;
+lw x10, 0(sp)
+addi x10, x10, 2
+sw x10, 0(sp)
+
+# 	if (i == n) {
+# load n in x11
+lw x11, 8(sp)
+# compare x10 and x11
+blt x10, x11, not_equals
+# 	  break;
+j while_end
+not_equals:
+# 	ret += tfn(*(int*)((short*)w[i].c + 1));
+
+# load w[i].c in x13
+# w[i].c = *((char *)w + i * sizeof(Word)).c
+# w[i]
+# load sizeof(Word) in x13
+li x13, 16
+# load w in x14
+lw x14, 12(sp)
+# store i * 12 in x13
+mul x13, x13, x10
+# add x13 to x14
+add x13, x13, x14
+# laod w[i].c in x13
+addi x13, x13, 8
+
+# (short*)w[i].c + 1
+# x13 + sizeof(short) * 1
+addi x13, x13, 2
+lw x13, 0(x13)
+
+# load tfn in x14
+lw x14, 16(sp)
+
+# save return address
+addi sp, sp, -4
+sw ra, 0(sp)
+
+# store args for tfn
+addi sp, sp, -4
+sw x13, 0(sp)
+
+jalr x14
+
+addi sp, sp, 4
+
+# restore ra
+lw ra, 0(sp)
+addi sp, sp, 4
+
+# load ret in x12
+lw x12, 4(sp)
+
+add x12, x12, x10
+sw x12, 4(sp)
+
+#   }
+j while_start
+
+while_end:
+#   return ret;
+lw x10, 4(sp)
+addi sp, sp, 8
 ret
 
 run_test_min:
