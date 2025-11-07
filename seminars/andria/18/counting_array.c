@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #define GET_ELEM(a, i) ((char *)(a)->elem_arr + (i) * (a)->elem_size)
 
@@ -118,10 +119,27 @@ void CountingArrayRemove(CountingArray* a, void* elem) {
 
 void CountingArrayMerge(CountingArray* a, CountingArray* o) {
     for (int i = 0; i < o->log_len; i++)
-    {
-        for (int j = 0; j < o->count_arr[i]; j++)
+    {   
+        // შეცდომა სემინარზე, 1 ობიექტს, რომელიც o-ში ინახება, ბევრჯერ როდესაც ვაინსერტებდით
+        // a არაი ამას განსხვავებულ ობიექტებად აღიქვამდა და შესაბამისად, 1-ზე მეტჯერ იძახებდა მასზე free-ს
+        // რეალურად, ერთ ობიექტზე მხოლოდ ერთხელ უნდა მოხდეს free
+        // ჩვენ შეგვიძლია ინსერტი გამოვიძახოთ ერთხელ თუ არ არსებობს ობიექტი საწყის არაიში და დანარჩენ
+        // შემთხვევაში (თუ უკვე არსებობს ან ერთხელ გამოძახების შემდეგ) გავზარდოთ ქაუნთ არაის მნიშვნელობა
+        void *elem_loc = bsearch(GET_ELEM(o, i), a->elem_arr, a->log_len, a->elem_size, a->cmp_fn);
+        int count = o->count_arr[i];
+
+        if (elem_loc == NULL) {
             CountingArrayInsert(a, GET_ELEM(o, i));
+
+            // თავიდან ვიპოვოთ ლოკაცია სადაც დაემატა, ინდექსის გასაგებად
+            elem_loc = bsearch(GET_ELEM(o, i), a->elem_arr, a->log_len, a->elem_size, a->cmp_fn);
+            count--;                // ერთხელ უკვე ინსერტმა დაამატა
+        }
+
+        int index = (elem_loc - a->elem_arr) / a->elem_size;
+        a->count_arr[index] += o->count_arr[i];           // 1 უკვე დაემატა ინსერტის დროს 
     }
 
-    CountingArrayDestroy(o);
+    free(o->elem_arr);
+    free(o->count_arr);
 }
