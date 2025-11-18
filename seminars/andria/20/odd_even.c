@@ -60,7 +60,7 @@ int main()
 {
     pthread_t odd_thread, even_thread;
     // mut_t odd_lock, even_lock;
-    sem_t *odd_sem, *even_sem;
+    sem_t odd_sem, even_sem; // *odd_sem, *even_sem for MacOS
 
     // pthread_mutex_init(&odd_lock, NULL);
     // pthread_mutex_init(&even_lock, NULL);
@@ -74,8 +74,8 @@ int main()
     thread_args_t args;
     // args.odd_lock = &odd_lock;
     // args.even_lock = &even_lock;
-    args.odd_sem = odd_sem;
-    args.even_sem = even_sem;
+    args.odd_sem = &odd_sem;
+    args.even_sem = &even_sem;
 
     // pthread_mutex_lock(&even_lock); // make even_lock value 0 like on semaphores
 
