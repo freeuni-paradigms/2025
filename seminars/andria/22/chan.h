@@ -4,15 +4,22 @@
 #include <stdio.h>
 #include <semaphore.h>
 #include <pthread.h>
+#include <stdbool.h>
 
 #include "myQueue/myQueue.h"
 
 typedef struct
-{
+{  
+    Queue *queue;
+
+    pthread_mutex_t lock;
+    sem_t read, write;
+    
+    bool is_buffered;
 } chan_t; // (same as blocking queue)
 
 // BufferSize = 0 for unbuffered channel
-void chanInit(chan_t *chan, int elemSize, int bufferSize);
+void chanInit(chan_t *chan, int elemSize, int buffer_size);
 
 /*
  * Function: chanSend

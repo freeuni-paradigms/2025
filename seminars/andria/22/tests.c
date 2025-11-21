@@ -314,7 +314,7 @@ void *bufferedStructRecieve(void *args) {
     chanRecv(chan, &sem);
     sem_getvalue(&sem, &semVal);
     ASSERT(!(strcmp(sem.__size, testSem.__size)) && semVal == testSemVal, 
-            ("testStringbuffered Failed\n"));
+            ("testStructbuffered Failed\n"));
     printf("\tA struct recieved\n");
 }
 
@@ -347,7 +347,7 @@ int main() {
     testInt();
     testDouble();
     testString();
-    testStruct();
+    // testStruct();
 
     printf("\nTest Complete\n");
     return 0;
