@@ -32,5 +32,5 @@ void StudentWasEvaluatedByTeacher(int student_id, int teacher_id, bool set_was_g
 }
 
 void SchoolEnd() {
-  printf("School finished.\n");
+  printf("School finished.\n\n");
 }

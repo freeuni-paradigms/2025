@@ -24,7 +24,7 @@ typedef struct {
 } student_data_t;
 
 teacher_data_t teachers[MAX_NUM_TEACHERS];
-int num_students, num_teachers;
+int students_count, teachers_count;
 pthread_mutex_t global_lock;
 
 void* Teacher(void* args) {
@@ -32,7 +32,7 @@ void* Teacher(void* args) {
 
     while (true) {    
         LOCK(global_lock);
-        if (num_students <= 0) {
+        if (students_count <= 0) {
             UNLOCK(global_lock);
             break;
         }
@@ -65,7 +65,7 @@ void* Student(void* args) {
         
         // find free teacher (get teacher_id) and send id
         int teacher_id;
-        for (int i = 0; true; i++, i %= num_teachers)
+        for (int i = 0; true; i++, i %= teachers_count)
         {
             LOCK(teachers[i].internal_lock);
             if (teachers[i].is_free) {
@@ -92,7 +92,7 @@ void* Student(void* args) {
     StudentDone(id);
 
     LOCK(global_lock);
-    num_students--;
+    students_count--;
     UNLOCK(global_lock);
     
     return NULL;
@@ -102,8 +102,8 @@ void StartSchool(int num_students, int num_teachers) {
     int teacher_id[num_students];
     int student_id[num_teachers];
 
-    num_students = num_students;
-    num_teachers = num_teachers;;
+    students_count = num_students;
+    teachers_count = num_teachers;
     pthread_mutex_init(&global_lock, NULL);
 
     for (int i = 0; i < num_teachers; ++i) {

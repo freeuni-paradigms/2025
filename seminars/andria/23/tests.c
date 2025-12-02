@@ -1,14 +1,19 @@
 #include "dj_school.h"
 
 void TestOneStudentOneTeacher() {
-  StartSchool(1, 1);
+    StartSchool(1, 1);
 }
 
-void TestFiveStudentsOneTeacher() {
-  StartSchool(3, 5);
+void TestThreeStudentsFiveTeacher() {
+    StartSchool(3, 5);
+}
+
+void TestHundredStudentsTenTeachers() {
+    StartSchool(100, 10);
 }
 
 int main() {
-  TestOneStudentOneTeacher();
-  TestFiveStudentsOneTeacher();
+    TestOneStudentOneTeacher();
+    TestThreeStudentsFiveTeacher();
+    // TestHundredStudentsTenTeachers();
 }
