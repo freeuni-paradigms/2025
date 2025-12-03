@@ -143,7 +143,8 @@ void StartSchool(int num_students, int num_teachers) {
   // IMPLEMENT: Wait for the all students and teachers to finish.
   
   pthread_mutex_lock(&mutex);
-  pthread_cond_wait(&students_cond, &mutex);
+  if (studentsCount != 0)
+    pthread_cond_wait(&students_cond, &mutex);
   pthread_mutex_unlock(&mutex);
 
   studentsDone = true;
@@ -153,7 +154,8 @@ void StartSchool(int num_students, int num_teachers) {
   }
 
   pthread_mutex_lock(&mutex);
-  pthread_cond_wait(&teachers_cond, &mutex);
+  if (teachersCount != 0) 
+    pthread_cond_wait(&teachers_cond, &mutex);
   pthread_mutex_unlock(&mutex);
 
   SchoolEnd();
