@@ -6,8 +6,16 @@
 
 #include "robot.h"
 
+#define MAX_ROBOTS_COUNT 1000
+
 typedef struct {
-  // აქ დაამატეთ ცვლადები
+    const Robot *robots[MAX_ROBOTS_COUNT]; // FILO
+    int arr_len;
+    int active_robots_count;
+
+    pthread_t manager_thread;
+    bool is_stopping;
+    pthread_mutex_t lock;
 } Competition;
 
 // უკეთებს შეჯიბრს ინიციალიზაციას.
