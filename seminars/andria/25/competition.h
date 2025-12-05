@@ -16,6 +16,7 @@ typedef struct {
     pthread_t manager_thread;
     bool is_stopping;
     pthread_mutex_t lock;
+    pthread_cond_t cond;
 } Competition;
 
 // უკეთებს შეჯიბრს ინიციალიზაციას.

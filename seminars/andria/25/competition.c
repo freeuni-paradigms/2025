@@ -26,6 +26,8 @@ void *Arena(void *args) {
     comp->active_robots_count--;
     UNLOCK(comp->lock);
 
+    pthread_cond_signal(&comp->cond);
+
     free(arena_args);
     return NULL;
 }
@@ -37,15 +39,16 @@ void *FightManager(void *args) {
         // check if we need to continue searching
         LOCK(comp->lock);
 
+        // check for arr size
+        while ((comp->arr_len < 2) && 
+               (!comp->is_stopping || comp->active_robots_count >= 2)) 
+        {
+            pthread_cond_wait(&comp->cond, &comp->lock);
+        }
+
         if (comp->is_stopping && comp->active_robots_count < 2) {
             UNLOCK(comp->lock);
             break;
-        }
-
-        // check for arr size
-        if (comp->arr_len < 2) {
-            UNLOCK(comp->lock);
-            continue;
         }
 
         ArenaArgs *args = malloc(sizeof(ArenaArgs));
@@ -70,6 +73,7 @@ void CompetitionInit(Competition* comp) {
 
     comp->is_stopping = false;
     pthread_mutex_init(&comp->lock, NULL);
+    pthread_cond_init(&comp->cond, NULL);
 }
 
 void CompetitionStart(Competition* comp) {
@@ -85,6 +89,7 @@ const Robot* CompetitionStop(Competition* comp) {
     const Robot *winner = comp->robots[0];
 
     pthread_mutex_destroy(&comp->lock);
+    pthread_cond_destroy(&comp->cond);
 
     return winner;
 }
@@ -101,5 +106,7 @@ bool CompetitionAddParticipant(Competition* comp, const Robot* robot) {
     comp->active_robots_count++;
 
     UNLOCK(comp->lock);
+
+    pthread_cond_signal(&comp->cond);
     return true;
 }
