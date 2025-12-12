@@ -1,4 +1,4 @@
-# [ჰენდაუთი](https://github.com/freeuni-paradigms/2021/blob/master/handouts/29-Introduction-To-Scheme.pdf)
+# [ჰენდაუთი](https://github.com/freeuni-paradigms/2025/blob/master/handouts/29-Introduction-To-Scheme.pdf)
 
 # პირობები
 

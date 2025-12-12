@@ -47,3 +47,25 @@
                                           )
     )
 )
+
+
+
+(define (prime-helper k n)
+  (cond ((= n k) #t)
+        ((> n k) #f)
+        ((= (remainder k n) 0) #f)
+        ((prime-helper k (+ n 1)))
+  )
+)
+
+(define (prime? k)
+  (prime-helper k 2) 
+)
+
+(define (primes? l)
+  (if (null? l) '()
+    (cons (prime? (car l)) (primes? (cdr l)))
+  )
+)
+
+
