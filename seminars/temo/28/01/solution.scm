@@ -35,3 +35,28 @@
 (define (frequency l)
   (map (lambda (n) (list n (count n l))) (set l))
 )
+
+;2 '(1 2 1 2 2) 
+;'(1 1 2 2 1 1 2 2 2 2)
+(define (mult n e)
+  (if (zero? n) '()
+    (cons e (mult (- n 1) e))
+  )
+)
+
+(define (multiply n l)
+  (apply append (map (lambda (e) (mult n e)) l))
+)
+
+(define (ksubset k l)
+  (cond ((zero? k) '(()))
+        ((null? l) '())
+        (else (append
+              (map 
+                (lambda (e) (cons (car l) e))
+                (ksubset (- k 1) (cdr l)))
+              (ksubset k (cdr l)))
+
+        )
+  )
+)
