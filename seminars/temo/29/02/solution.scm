@@ -67,4 +67,27 @@
   )
 )
 
+(define (is-way-helper graph a b visited)
+  (cond ((= a b) 1)
+        ((> (count a visited) 0) 0)
+        (else 
+          (apply +
+            (map (lambda (e)
+                        (cond ((= (car e) a) (is-way-helper graph (cadr e) b (cons a visited)))
+                              ((= (cadr e) a) (is-way-helper graph (car e) b (cons a visited)))
+                              (else 0)
+                        )
+                     )
+            graph)
+          )
+        )
+  )      
+)
+
+(define (isWay? graph a b)
+  (let ((ans (is-way-helper graph a b '())))
+      (> ans 0)
+  )
+)
+
 
