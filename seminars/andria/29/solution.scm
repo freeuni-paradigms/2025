@@ -87,7 +87,54 @@
     )
 )
 
+; isWay
+(define (contains? lst elem) 
+    (if (null? lst)
+        #f
+        (or (= elem (car lst)) (contains? (cdr lst) elem))
+    )
+    ; (apply or (map (lambda (x) (= elem x)) lst))
+)
 
-; isWay with bfs
+(define (new_neighbours edges visited curr_node)
+    (apply append    
+        (map (lambda (edge) 
+                (if (= curr_node (car edge))
+                    (if (contains? visited (cadr edge))
+                        `()
+                        (list (cadr edge))
+                    )
+                    (if (= curr_node (cadr edge))
+                        (if (contains? visited (car edge))
+                            `()
+                            (list (car edge))
+                        )
+                        `() 
+                    )
+                )
+            ) 
+            edges
+        )
+    )
+)
+
+(define (bfs edges finish visited queue)
+    (if (null? queue)
+        #f
+        (if (= (car queue) finish)
+            #t
+            (let ((neighbours (new_neighbours edges visited (car queue))))
+                (bfs 
+                    edges 
+                    finish 
+                    (append visited neighbours)
+                    (append (cdr queue) neighbours)
+                )
+            )
+        )
+    )
+)
+
 (define (isWay? edges start finish)
+    (bfs edges finish (list start) (list start))
 )
