@@ -1,12 +1,12 @@
 typedef struct {
-    char *name;
+    char *name;    
     short freeCredits;
-    short *grades;
-    short (*addScores)(void *scores, int n);
-} Student;
+    short *grades;    
+    short (*addScores)(void *scores, int n);    
+} Student;                                 
 
 typedef struct {
-    char *name;
+    char *name;  
     short credits;
     short studentsNumber;
     Student **students;
