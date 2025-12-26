@@ -1,0 +1,7 @@
+#ifndef PARADIGMS_PROBLEMS_THREADS_SERVER_ROOM_MAINTENANCE_H_
+#define PARADIGMS_PROBLEMS_THREADS_SERVER_ROOM_MAINTENANCE_H_
+
+void SetUpServerRoom(int num_tables, int hardware_team_size,
+		     int software_team_size);
+
+#endif // PARADIGMS_PROBLEMS_THREADS_SERVER_ROOM_MAINTENANCE_H_
