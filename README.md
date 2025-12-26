@@ -18,7 +18,7 @@
 | 06 - bankdriver | 9 | [https://classroom.github.com/a/MuMgVD4w](https://classroom.github.com/a/MuMgVD4w) |  |
 | 07 - where-am-i | 4 | [https://classroom.github.com/a/8rtlHEzH](https://classroom.github.com/a/8rtlHEzH) |  |
 | 08 - align | 3 | [https://classroom.github.com/a/oSX48icO](https://classroom.github.com/a/oSX48icO) |  |
-| bonus | 10 |  |  |
+| bonus | 10 | https://classroom.github.com/a/oU_GdqQk |  |
 
 ## Git basics
 შემდეგი დოკუმენტი აგიხსნით Git-ის საწყისებს და როგორ გამოიყენოთ ის დავალებების ჩასაბარებლად: https://docs.google.com/document/d/1cpRxmGSkNf-7ynzIr1Bl-NAxfACJH5YjsLbVA4CzSCY/edit#  
