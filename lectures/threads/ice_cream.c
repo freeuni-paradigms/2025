@@ -9,7 +9,7 @@
 #define NUM_CUSTOMERS 10
 
 void Sleep() {
-  sleep(1 + rand() % 2);
+  sleep(1 + rand() % 10);
 }
 
 int MakeOrder() {
