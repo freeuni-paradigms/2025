@@ -1,0 +1,5 @@
+sed -e '/;; max-subsequence/,$d' max_subsequence.scm > test_out/max_subsequence.scm
+cp tests.scm test_out
+/home/para/code/kawa/bin/kawa -J-Xss50M -J-Xmx100M  tests.scm
+- max_subsequence.scm
++ tests.scm
